@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+  <meta charset="UTF-8">
+  <title>F1 Coureurs 2025</title>
+  <style>
+    .controls {
+      display: flex;
+      align-items: center;
+      gap: 20px;          /* ruimte tussen sorteren en zoeken */
+      margin-bottom: 20px;
+    }
+    .dropdown-content {
+      display: none;
+      position: absolute;
+    }
+    .dropdown:hover .dropdown-content {
+      display: block;
+    }
+    #driversTable {
+      margin-top: 30px;  /* zet de tabel 30px naar beneden */
+      border-collapse: collapse;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Sorteren + Zoeken naast elkaar -->
+  <div class="controls">
+    <div class="dropdown">
+      <button>Sorteren</button>
+      <div class="dropdown-content">
+        <button onclick="sortTable('firstName')">Voornaam</button>
+        <button onclick="sortTable('lastName')">Achternaam</button>
+        <button onclick="sortTable('age')">Leeftijd</button>
+      </div>
+    </div>
+
+    <!-- Zoekveld -->
+    <div id="zoeker">
+      <input type="text" id="searchInput" placeholder="Zoek coureur...">
+    </div>
+  </div>
+
+  <table border="1" id="driversTable">
+    <thead>
+      <tr>
+        <th>Voornaam</th>
+        <th>Achternaam</th>
+        <th>Leeftijd</th>
+      </tr>
+    </thead>
+    <tbody></tbody>
+  </table>
+
+  <script>
+    const f1Drivers2025 = [
+      { firstName: "Max", lastName: "Verstappen", age: 27 },
+      { firstName: "Lando", lastName: "Norris", age: 25 },
+      { firstName: "Gabriel", lastName: "Bortoleto", age: 20 },
+      { firstName: "Isack", lastName: "Hadjar", age: 20 },
+      { firstName: "Jack", lastName: "Doohan", age: 22 },
+      { firstName: "Pierre", lastName: "Gasly", age: 29 },
+      { firstName: "Andrea Kimi", lastName: "Antonelli", age: 19 },
+      { firstName: "Fernando", lastName: "Alonso", age: 44 },
+      { firstName: "Charles", lastName: "Leclerc", age: 27 },
+      { firstName: "Lance", lastName: "Stroll", age: 26 },
+      { firstName: "Yuki", lastName: "Tsunoda", age: 25 },
+      { firstName: "Alex", lastName: "Albon", age: 29 },
+      { firstName: "Nico", lastName: "Hulkenberg", age: 38 },
+      { firstName: "Liam", lastName: "Lawson", age: 23 },
+      { firstName: "Esteban", lastName: "Ocon", age: 28 },
+      { firstName: "Oliver", lastName: "Bearman", age: 20 },
+      { firstName: "Lewis", lastName: "Hamilton", age: 40 },
+      { firstName: "Carlos", lastName: "Sainz", age: 31 },
+      { firstName: "George", lastName: "Russell", age: 27 },
+      { firstName: "Oscar", lastName: "Piastri", age: 24 }
+    ];
+
+    let currentData = [...f1Drivers2025]; // voor zoeken + sorteren
+
+    function renderTable(data) {
+      const tbody = document.querySelector("#driversTable tbody");
+      tbody.innerHTML = "";
+      data.forEach(d => {
+        const row = `<tr><td>${d.firstName}</td><td>${d.lastName}</td><td>${d.age}</td></tr>`;
+        tbody.innerHTML += row;
+      });
+    }
+
+    function sortTable(key) {
+      currentData.sort((a, b) =>
+        typeof a[key] === "string" ? a[key].localeCompare(b[key]) : a[key] - b[key]
+      );
+      renderTable(currentData);
+    }
+
+    document.getElementById("searchInput").addEventListener("keyup", function() {
+      const filter = this.value.toLowerCase();
+      currentData = f1Drivers2025.filter(d =>
+        d.firstName.toLowerCase().includes(filter) ||
+        d.lastName.toLowerCase().includes(filter) ||
+        d.age.toString().includes(filter)
+      );
+      renderTable(currentData);
+    });
+
+    renderTable(f1Drivers2025);
+  </script>
+
+</body>
+</html>
